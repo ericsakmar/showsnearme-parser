@@ -1,7 +1,8 @@
 const express = require('express'),
     router = express.Router(),
     config = require('../config'),
-    FB = require('fb');
+    FB = require('fb'), 
+    parser = require('./parser');
 
 router.get('/:id', function(req, res, next) {
 
@@ -16,6 +17,9 @@ router.get('/:id', function(req, res, next) {
   };
 
   FB.api(`/${req.params.id}`, params, (e) => {
+
+    e.links = parser.findLinks(e.description);
+
     res.json(e);
   });
 });
