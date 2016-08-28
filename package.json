@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "fb": "^1.1.0",
+    "metaget": "^1.0.3",
     "mocha": "^2.3.3",
     "should": "^7.1.0"
   }

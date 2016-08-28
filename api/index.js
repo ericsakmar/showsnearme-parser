@@ -1,27 +1,24 @@
 const express = require('express'),
     router = express.Router(),
-    config = require('../config'),
-    FB = require('fb'), 
-    parser = require('./parser');
+    parser = require('./parser'),
+    events = require('./events');
 
 router.get('/:id', function(req, res, next) {
 
-  FB.options({
-    appId: config.fb.app_id,
-    xfbml: true,
-    version: 'v2.6'
+  events.getFbEvent(req.params.id).then(event => {
+
+    parser.findLinks(event.description)
+      .then(links => {
+        event.links = links;
+        return parser.findMetas(event.links);
+      })
+      .then(metas => {
+        event.metas = metas;
+        res.json(event);
+      });
+
   });
 
-  const params = {
-    access_token: config.fb.access_token 
-  };
-
-  FB.api(`/${req.params.id}`, params, (e) => {
-
-    e.links = parser.findLinks(e.description);
-
-    res.json(e);
-  });
 });
 
 module.exports = router;

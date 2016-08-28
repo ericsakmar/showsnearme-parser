@@ -1,7 +1,9 @@
-const parser = {
+const metaget = require('metaget');
 
-  findLinks(d) {
 
+function findLinks(d) {
+
+  return new Promise((resolve, reject) => {
     const regex = /http\S*(?=\s)/g;
 
     const matches = [];
@@ -11,9 +13,29 @@ const parser = {
       matches.push(match[0]);
     }
 
-    return matches;
-  }
-  
-};
+    resolve(matches);
+  });
 
-module.exports = parser;
+}
+
+function findMetas(links) {
+  const promises = links
+    .filter(link => link.indexOf('bandcamp') != -1)
+    .map(link => {
+    return new Promise((resolve, reject) => {
+      metaget.fetch(link, (err, metas) => {
+        if (err) {
+          // ignoring fetch errors
+          resolve(null);
+        }
+        else {
+          resolve(metas);
+        }
+      });
+    });
+  });
+  
+  return Promise.all(promises);
+}
+
+module.exports = { findLinks, findMetas };
