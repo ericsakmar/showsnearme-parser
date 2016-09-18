@@ -29,8 +29,7 @@ app.use(cookieParser());
 var whitelist = ['http://localhost:4200'];
 var corsOptions = {
   origin: function(origin, callback){
-    console.log(origin);
-    var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+    var originIsWhitelisted = origin === undefined || whitelist.indexOf(origin) !== -1;
     callback(originIsWhitelisted ? null : 'Bad Request', originIsWhitelisted);
   }
 };
