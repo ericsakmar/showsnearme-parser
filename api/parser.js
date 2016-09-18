@@ -1,5 +1,5 @@
+"use strict";
 const metaget = require('metaget');
-
 
 function findLinks(d) {
 
@@ -38,4 +38,35 @@ function findMetas(links) {
   return Promise.all(promises);
 }
 
-module.exports = { findLinks, findMetas };
+/*
+ * other ideas for this one:
+ *  - scan text for known band names
+ *  - use data from earlier posts
+ */
+function findBandInfo(data) {
+  return new Promise((resolve, reject) => {
+
+    const bands = data.map(meta => {
+      let band = {
+        name: meta['og:site_name'],
+        description: meta['Description'],
+        image: meta['og:image'],
+        url: meta['og:url']
+      };
+
+      if (meta['og:video']) {
+        band.embed = {
+          url: meta['og:video'],
+          width: meta['og:video:width'],
+          height: meta['og:video:height']
+        };
+      }
+
+      return band;
+    });
+
+    resolve(bands);
+  });
+}
+
+module.exports = { findLinks, findMetas, findBandInfo };

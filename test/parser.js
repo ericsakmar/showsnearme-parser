@@ -1,3 +1,5 @@
+"use strict";
+
 const should = require('should'),
   parser = require('../api/parser');
 
@@ -42,7 +44,6 @@ describe('parser', () => {
       });
     });
 
-
   });
 
 
@@ -82,9 +83,73 @@ describe('parser', () => {
       );
     });
 
+  });
 
+
+  describe('gets band info', () => {
+
+    it('finds info', (done) => {
+      var meta = {
+        'Description': 'band description',
+        'og:site_name': 'Band Name',
+        'og:image': 'image.jpg',
+        'og:url': 'band.com',
+        'og:video': 'videourl',
+        'og:video:width': '400',
+        'og:video:height': '120'
+      };
+
+      parser.findBandInfo([meta]).then(
+        (bands) => {
+          bands.length.should.equal(1);
+
+          let expected = {
+            name: meta['og:site_name'],
+            description: meta['Description'],
+            image: meta['og:image'],
+            url: meta['og:url'],
+            embed: {
+              url: meta['og:video'],
+              width: meta['og:video:width'],
+              height: meta['og:video:height']
+            }
+          };
+
+          let band = bands[0];
+          band.should.deepEqual(expected);
+
+          done();
+        }, done).catch(done);
+
+    });
+
+    it('no embed', (done) => {
+      var meta = {
+        'Description': 'band description',
+        'og:site_name': 'Band Name',
+        'og:image': 'image.jpg',
+        'og:url': 'band.com'
+      };
+
+      parser.findBandInfo([meta]).then(
+        (bands) => {
+          bands.length.should.equal(1);
+
+          let expected = {
+            name: meta['og:site_name'],
+            description: meta['Description'],
+            image: meta['og:image'],
+            url: meta['og:url']
+          };
+
+          let band = bands[0];
+          band.should.deepEqual(expected);
+
+          done();
+        }, done).catch(done);
+
+    });
 
   });
-    
     
 });
