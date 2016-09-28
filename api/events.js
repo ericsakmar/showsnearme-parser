@@ -12,7 +12,7 @@ function getFbEvent(id) {
     
     const params = {
       access_token: config.fb.access_token,
-      fields: 'name,description,category,cover,start_time,end_time,owner'
+      fields: 'name,description,category,cover,start_time,end_time,owner,place'
     };
 
     FB.api(`/${id}`, params, (event, err) => {
