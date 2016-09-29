@@ -69,4 +69,37 @@ function findBandInfo(data) {
   });
 }
 
-module.exports = { findLinks, findMetas, findBandInfo };
+function findTags(data) {
+  return new Promise((resolve, reject) => {
+    let tags = [];
+
+    // category
+    if (data.category) {
+      tags.push(data.category);
+    }
+
+    if (data.place) {
+      // place
+      if (data.place.name) {
+        tags.push(data.place.name);
+      }
+
+      // city
+      if (data.place.location) {
+        if (data.place.location.city && data.place.location.state) {
+          tags.push(`${data.place.location.city} ${data.place.location.state}`);
+        }
+      }
+    }
+
+    // bands
+    tags = tags.concat(data.bands.map(band => band.name));
+
+    // more ideas...
+    //  genres
+
+    resolve(tags);
+  });
+}
+
+module.exports = { findLinks, findMetas, findBandInfo, findTags };

@@ -151,5 +151,34 @@ describe('parser', () => {
     });
 
   });
+
+  describe('tags', () => {
+
+    it('finds tags', () => {
+      const raw = {
+        category: 'MUSIC_EVENT',
+        place: { 
+          name: 'Place!',
+          location: { city: 'Washington', state: 'DC' }
+        },
+        bands: [
+          {name: 'My Band'},
+          {name: 'Your Band'}
+        ]
+      };
+
+      const expected = [
+        raw.category,
+        raw.place.name,
+        'Washington DC',
+        raw.bands[0].name,
+        raw.bands[1].name
+      ];
+
+      return parser.findTags(raw).then(
+        (tags) => tags.should.deepEqual(expected) 
+      );
+    });
+  });
     
 });
