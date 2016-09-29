@@ -12,6 +12,10 @@ router.get('/:id', function(req, res, next) {
       .then(metas => parser.findBandInfo(metas))
       .then(bands => {
         event.bands = bands;
+        return parser.findTags(event);
+      })
+      .then(tags => {
+        event.tags = tags;
         res.json(event);
       });
 
