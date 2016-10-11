@@ -1,0 +1,11 @@
+version: '2'
+
+services:
+
+  parser:
+    build: .
+    command: npm start
+    volumes:
+      - .:/opt/parser
+    ports:
+      - "3000:3000"
