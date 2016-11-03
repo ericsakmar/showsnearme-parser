@@ -8,4 +8,4 @@ services:
     volumes:
       - .:/opt/parser
     ports:
-      - "3000:3000"
+      - "3001:3000"
