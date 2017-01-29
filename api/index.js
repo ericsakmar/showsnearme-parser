@@ -23,4 +23,18 @@ router.get('/:id', function(req, res, next) {
 
 });
 
+router.get('/feed/:id', function(req, res, next) {
+
+  events.getFeed(req.params.id).then(events => {
+
+    const ids = events
+      .filter(event => event.type === 'event')
+      .map(event => event.object_id);
+
+    res.json(ids);
+
+  });
+
+});
+
 module.exports = router;

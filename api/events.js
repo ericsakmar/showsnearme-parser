@@ -7,7 +7,7 @@ function getFbEvent(id) {
     FB.options({
       appId: config.fb.app_id,
       xfbml: true,
-      version: 'v2.6'
+      version: 'v2.8'
     });
     
     const params = {
@@ -27,4 +27,30 @@ function getFbEvent(id) {
   });
 };
 
-module.exports = { getFbEvent };
+function getFeed(pageId) {
+  return new Promise((resolve, reject) => {
+
+    FB.options({
+      appId: config.fb.app_id,
+      xfbml: true,
+      version: 'v2.8'
+    });
+
+    const params = {
+      access_token: config.fb.access_token,
+      fields: 'type,object_id'
+    };
+
+    FB.api(`/${pageId}/feed`, params, (feed, err) => {
+      if (err) {
+        reject(err);
+      } 
+      else {
+        resolve(feed.data);
+      }
+    });
+    
+  });
+}
+
+module.exports = { getFbEvent, getFeed };
