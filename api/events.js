@@ -1,14 +1,17 @@
 const config = require('../config'),
   FB = require('fb');
 
+const fbConfig = {
+  appId: config.fb.app_id,
+  xfbml: true,
+  version: 'v2.8'
+};
+
+
 function getFbEvent(id) {
   return new Promise((resolve, reject) => {
 
-    FB.options({
-      appId: config.fb.app_id,
-      xfbml: true,
-      version: 'v2.8'
-    });
+    FB.options(fbConfig);
     
     const params = {
       access_token: config.fb.access_token,
@@ -30,11 +33,7 @@ function getFbEvent(id) {
 function getFeed(pageId) {
   return new Promise((resolve, reject) => {
 
-    FB.options({
-      appId: config.fb.app_id,
-      xfbml: true,
-      version: 'v2.8'
-    });
+    FB.options(fbConfig);
 
     const params = {
       access_token: config.fb.access_token,
@@ -53,4 +52,26 @@ function getFeed(pageId) {
   });
 }
 
-module.exports = { getFbEvent, getFeed };
+function getFeedInfo(pageId) {
+  return new Promise((resolve, reject) => {
+
+    FB.options(fbConfig);
+
+    const params = {
+      access_token: config.fb.access_token,
+      fields: 'id,name'
+    };
+
+    FB.api(`/${pageId}`, params, (feed, err) => {
+      if (err) {
+        reject(err);
+      } 
+      else {
+        resolve(feed);
+      }
+    });
+    
+  });
+}
+
+module.exports = { getFbEvent, getFeed, getFeedInfo };
