@@ -37,4 +37,10 @@ router.get('/feed/:id', function(req, res, next) {
 
 });
 
+router.get('/feed_info/:id', function(req, res, next) {
+  events.getFeedInfo(req.params.id).then(info => {
+    res.json(info);
+  });
+});
+
 module.exports = router;
