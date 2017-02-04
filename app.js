@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 
+var config = require('./config');
 var api = require('./api');
 
 var app = express();
@@ -26,18 +27,13 @@ app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
 
 // cors
-var whitelist = ['http://localhost:4200'];
 var corsOptions = {
   origin: function(origin, callback){
-
-    console.log('origin:');
-    console.log(origin);
-
-    var originIsWhitelisted = origin === undefined || whitelist.indexOf(origin) !== -1;
+    var originIsWhitelisted = origin === config.cors;
     callback(originIsWhitelisted ? null : 'Bad Request', originIsWhitelisted);
   }
 };
-//app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 app.use('/', api);
 
