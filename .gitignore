@@ -5,3 +5,4 @@ config/config.production.js
 *.swp
 .DS_Store
 *.log
+keys.js

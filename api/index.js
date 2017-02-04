@@ -1,9 +1,10 @@
 const express = require('express'),
     router = express.Router(),
     parser = require('./parser'),
-    events = require('./events');
+    events = require('./events'),
+    mustBe = require('./auth').mustBe;
 
-router.get('/:id', function(req, res, next) {
+router.get('/:id', mustBe('api'), function(req, res, next) {
 
   events.getFbEvent(req.params.id).then(event => {
 
@@ -23,7 +24,7 @@ router.get('/:id', function(req, res, next) {
 
 });
 
-router.get('/feed/:id', function(req, res, next) {
+router.get('/feed/:id', mustBe('api'), function(req, res, next) {
 
   events.getFeed(req.params.id).then(events => {
 
@@ -37,7 +38,7 @@ router.get('/feed/:id', function(req, res, next) {
 
 });
 
-router.get('/feed_info/:id', function(req, res, next) {
+router.get('/feed_info/:id', mustBe('api'), function(req, res, next) {
   events.getFeedInfo(req.params.id).then(info => {
     res.json(info);
   });
