@@ -13,10 +13,10 @@
     "express": "~4.13.1",
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0"
-  },
-  "devDependencies": {
     "fb": "^1.1.0",
     "metaget": "^1.0.3",
+  },
+  "devDependencies": {
     "mocha": "^2.3.3",
     "should": "^7.1.0"
   }
