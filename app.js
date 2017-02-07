@@ -11,7 +11,7 @@ var api = require('./api');
 var app = express();
 
 // database
-var cfg = require('./config');
+var config = require('./config');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -24,7 +24,7 @@ app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
 
 var httpsOnly = function(req, res, next) {
-  if (process.env.NODE_ENV === 'production') {
+  if (config.env === 'production') {
     if (req.headers['x-forwarded-proto'] === 'https') {
       return next();
     } else {
@@ -38,7 +38,6 @@ var httpsOnly = function(req, res, next) {
   }
 };
 app.use(httpsOnly);
-
 
 app.use('/', api);
 
