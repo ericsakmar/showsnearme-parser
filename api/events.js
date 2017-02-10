@@ -62,7 +62,12 @@ function getEvents(pageId) {
       fields: 'id'
     };
 
-    FB.api(`/${pageId}/events`, params, (feed, err) => {
+    const now = new Date();
+    const since = Math.round(+now / 1000);
+    now.setDate(now.getDate() + 30);
+    const until = Math.round(+now / 1000);
+
+    FB.api(`/${pageId}/events?since=${since}&until=${until}`, params, (feed, err) => {
       if (err) {
         reject(err);
       } 
