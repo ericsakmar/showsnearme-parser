@@ -1,4 +1,3 @@
-const keys = require('./keys');
 const config = require('../config');
 
 const auth = {
@@ -14,10 +13,7 @@ const auth = {
 
         const key = req.headers.authorization;
 
-        const authorized = roles
-          .map((r) => keys[r])
-          .map((k) => k === key)
-          .reduce((a,c) => a || c, false);
+        const authorized = process.env.API_TOKEN === key;
 
         if (authorized) {
           next();
