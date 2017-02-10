@@ -7,18 +7,19 @@ const express = require('express'),
 router.get('/:id', mustBe('api'), function(req, res, next) {
 
   events.getFbEvent(req.params.id).then(event => {
+    res.json(event);
 
-    parser.findLinks(event.description)
-      .then(links => parser.findMetas(links))
-      .then(metas => parser.findBandInfo(metas))
-      .then(bands => {
-        event.bands = bands;
-        return parser.findTags(event);
-      })
-      .then(tags => {
-        event.tags = tags;
-        res.json(event);
-      });
+    // parser.findLinks(event.description)
+    //   .then(links => parser.findMetas(links))
+    //   .then(metas => parser.findBandInfo(metas))
+    //   .then(bands => {
+    //     event.bands = bands;
+    //     return parser.findTags(event);
+    //   })
+    //   .then(tags => {
+    //     event.tags = tags;
+    //     res.json(event);
+    //   });
 
   })
   .catch(e => console.log(e));
