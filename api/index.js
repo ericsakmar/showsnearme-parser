@@ -27,16 +27,19 @@ router.get('/:id', mustBe('api'), function(req, res, next) {
 
 router.get('/feed/:id', mustBe('api'), function(req, res, next) {
 
-  events.getFeed(req.params.id).then(events => {
-
-    const ids = events
+  const pageFeed = events.getFeed(req.params.id)
+    .then(events => events
       .filter(event => event.type === 'event')
-      .map(event => event.object_id);
+      .map(event => event.object_id));
 
-    res.json(ids);
+  const pageEvents = events.getEvents(req.params.id)
+    .then(events => events ? events.map(event => event.id) : []);
 
-  })
-  .catch(e => console.log(e));
+  Promise.all([pageFeed, pageEvents])
+    .then(ids => new Set(ids[0].concat(ids[1])))
+    .then(combined => Array.from(combined))
+    .then(noDuplicates => res.json(noDuplicates))
+    .catch(e => console.log(e));
 
 });
 
