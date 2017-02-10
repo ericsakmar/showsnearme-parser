@@ -52,6 +52,29 @@ function getFeed(pageId) {
   });
 }
 
+function getEvents(pageId) {
+  return new Promise((resolve, reject) => {
+
+    FB.options(fbConfig);
+
+    const params = {
+      access_token: config.fb.access_token,
+      fields: 'id'
+    };
+
+    FB.api(`/${pageId}/events`, params, (feed, err) => {
+      if (err) {
+        reject(err);
+      } 
+      else {
+        resolve(feed.data);
+      }
+    });
+    
+  });
+}
+
+
 function getFeedInfo(pageId) {
   return new Promise((resolve, reject) => {
 
@@ -74,4 +97,4 @@ function getFeedInfo(pageId) {
   });
 }
 
-module.exports = { getFbEvent, getFeed, getFeedInfo };
+module.exports = { getFbEvent, getFeed, getEvents, getFeedInfo };
